@@ -1,0 +1,7 @@
+---
+- name: Install Net-SNMP and MIBS
+  include_tasks: install_snmp.yml
+  when: manoc_snmp_setup
+
+- name: Install Manoc
+  include_tasks: install.yml

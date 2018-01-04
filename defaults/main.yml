@@ -1,0 +1,36 @@
+---
+# defaults file for manoc
+
+manoc_install_dir: "/opt/manoc"
+
+manoc_app_dir: "{{manoc_install_dir}}/app"
+
+manoc_download_from_git: true
+manoc_git_url: https://github.com/ManocLabs/manoc.git
+manoc_git_version: HEAD
+
+manoc_local_lib: "{{manoc_install_dir}}/perl5"
+
+manoc_db_name: manocdb
+manoc_db_user: manoc_rw
+manoc_db_pass: manoc123
+manoc_db_dsn: "dbi:mysql:database={{manoc_db_name}}"
+
+manoc_conf_file: /etc/manoc.conf
+manoc_log_conf_file: /etc/manoc_log.conf
+
+manoc_log_dir: /var/log/manoc
+manoc_log_file: "{{manoc_log_dir}}/manoc.log"
+
+manoc_snmp_setup: true
+manoc_snmp_mibs_dir: "{{ manoc_install_dir }}"
+manoc_snmp_conf_dir: /etc/snmp/
+manoc_snmp_conf_file: "{{manoc_snmp_conf_dir}}/snmp.conf"
+
+manoc_run_dir: /var/run/manoc
+
+manoc_netdisco_mibs_url: "http://downloads.sourceforge.net/project/netdisco/netdisco-mibs/latest-snapshot/netdisco-mibs-snapshot.tar.gz"
+manoc_netdisco_mibs_checksum: sha1:c9f65eb9a0600033e8fe958ac8fd49e47f7035dd
+manoc_netdisco_conf_sample: netdisco-mibs-3.1/EXTRAS/contrib/snmp.conf
+# TODO
+# manoc_snmp_vendors:

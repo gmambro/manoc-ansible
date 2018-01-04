@@ -1,0 +1,16 @@
+[Unit]
+Description=Manoc netwalker
+After=network.target
+
+[Service]
+Type=forking
+Environment="PERL_LOCAL_LIB_ROOT={{ manoc_local_lib}}"
+Environment="PERL5LIB={{ manoc_local_lib}}/lib/perl5:{{manoc_app_dir}}/lib"
+Environment="APP_MANOC_CONFIG={{manoc_conf_file}}"
+
+ExecStart={{manoc_app_dir}}/script/manoc_netwalker.pl --pidfile {manoc_run_dir}}/netwalker.pid
+ExecStop={{manoc_app_dir}}/script/manoc_netwalker.pl --stop --pidfile {manoc_run_dir}}/netwalker.pid
+RemainAfterExit=yes
+
+[Install]
+WantedBy=default.target

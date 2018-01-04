@@ -1,0 +1,109 @@
+---
+- name: Manoc | Create install dir
+  file:
+    path: "{{manoc_install_dir}}"
+    state: directory
+    mode: 0755
+
+- name: Manoc | Install git packages
+  package: name=git state=present
+  when: manoc_download_from_git
+
+- name: Manoc | Install manoc sources from github
+  git:
+    repo: "{{ manoc_git_url }}"
+    dest: "{{ manoc_app_dir }}"
+    version: "{{ manoc_git_version}}"
+  when: manoc_download_from_git
+
+- name: Manoc | Install perl vendor packages and other prereqs
+  package: name={{item}} state=present
+  with_items:
+    - perl-core
+    - perl-devel
+    - gcc
+    - perl-DBD-MySQL
+    - net-snmp-perl
+    - libpcap-devel
+
+- name: Manoc | Test for cpanm
+  shell: perl -MApp::cpanminus -e1
+  register: cpanm_result
+  ignore_errors: true
+
+- name: Manoc | download CPANm installer
+  get_url:
+    url: http://cpanmin.us
+    dest: /tmp/cpanmin.pl
+    force: no
+  when: cpanm_result|failed
+
+- name: Manoc | Install CPANm
+  shell: perl /tmp/cpanmin.pl App::cpanminus
+  when: cpanm_result|failed
+
+- name: Manoc | Install Manoc deps
+  environment:
+      PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
+      PERL_CPANM_OPT: "--recommends"
+  cpanm:
+      installdeps: true
+      from_path: "{{manoc_app_dir}}"
+      notest: True
+      locallib: "{{manoc_local_lib}}"
+
+- name:  Manoc | Install additional deps
+  environment:
+      PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
+  cpanm:
+      name: "{{item}}"
+      notest: True
+      locallib: "{{manoc_local_lib}}"
+  with_items:
+      - FCGI::ProcManager
+      - Net::Pcap
+      - NetPacket::Ethernet
+      - DBD::mysql
+
+- name: Manoc | Create manoc config file
+  template:
+    src: manoc.conf.jj2
+    dest: "{{ manoc_conf_file }}"
+    mode: 644
+
+- name: Manoc | Create manoc log config file
+  template:
+    src: manoc_log.conf.jj2
+    dest: "{{ manoc_log_conf_file }}"
+    mode: 644
+
+- name: Manoc | Create run dir
+  file:
+    path: "{{ manoc_run_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Manoc | Create log dir
+  file:
+    path: "{{ manoc_log_dir }}"
+    state: directory
+    mode: 0755
+
+- name: Manoc | Create Systemd Unit files
+  template:
+    src: manoc-{{item}}.service.jj2
+    dest: /etc/systemd/system/manoc-{{item}}.service
+    mode: 644
+  with_items:
+      - arpsniffer
+      - fcgi
+      - netwalker
+  notify:
+    - reload systemctl
+
+- name: Manoc | Enable and start services
+  service: name=manoc-{{item}}.service state=started enabled=yes
+  with_items:
+      - arpsniffer
+      - fcgi
+      - netwalker

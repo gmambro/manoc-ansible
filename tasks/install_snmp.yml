@@ -1,0 +1,49 @@
+---
+- name: SNMP | download MIBS
+  get_url:
+      url: "{{ manoc_netdisco_mibs_url }}"
+      dest: /tmp/netdisco-mibs-snapshot.tar.gz
+      force: no
+      checksum: "{{ manoc_netdisco_mibs_checksum }}"
+
+- name: SNMP | Ensure MIBS dir parent exists
+  file:
+    path: "{{manoc_snmp_mibs_dir}}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: SNMP | Extract MIB files from archive
+  unarchive:
+    src: /tmp/netdisco-mibs-snapshot.tar.gz
+    dest: "{{manoc_snmp_mibs_dir}}"
+
+- name: SNMP | Ensure SNMP conf dir exists
+  file:
+    path: "{{ manoc_snmp_conf_dir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: SNMP | copy snmp.conf
+  copy:
+      src:  "{{manoc_snmp_mibs_dir}}/{{ manoc_netdisco_conf_sample }}"
+      dest: "{{ manoc_snmp_conf_file}}"
+      owner: root
+      group: root
+      mode: 0644
+      force: yes
+
+- name: SNMP | comment all mibs but basic ones in snmp.conf
+  replace:
+      dest: "{{manoc_snmp_conf_file}}"
+      regexp: '^(mibdirs \+/usr/local/netdisco/mibs/(?!cisco|enterasys|extreme|f5|fortinet|hp|rfc|net-snmp).+)$'
+      replace: '# \1'
+
+- name: SNMP | replace path in snmp.conf
+  replace:
+      dest: "{{manoc_snmp_conf_file}}"
+      regexp: '/usr/local/netdisco/mibs'
+      replace: "{{manoc_snmp_mibs_dir}}/netdisco-mibs-3.1"
