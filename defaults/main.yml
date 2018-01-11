@@ -11,10 +11,11 @@ manoc_git_version: HEAD
 
 manoc_local_lib: "{{manoc_install_dir}}/perl5"
 
-manoc_db_name: manocdb
-manoc_db_user: manoc_rw
-manoc_db_pass: manoc123
-manoc_db_dsn: "dbi:mysql:database={{manoc_db_name}}"
+manoc_db_name: ""
+manoc_db_user: ""
+manoc_db_pass: ""
+manoc_db_backend: sqlite
+
 
 manoc_conf_file: /etc/manoc.conf
 manoc_log_conf_file: /etc/manoc_log.conf

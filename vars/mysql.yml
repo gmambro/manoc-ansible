@@ -1,0 +1,6 @@
+---
+manoc_db_dsn: "dbi:mysql:database={{ manoc_db_name }}"
+
+manoc_pkg_db_deps:
+    - perl-DBD-MySQL
+manoc_cpan_db_deps: []

@@ -19,7 +19,7 @@ name Manoc
  <connect_info>
 	dsn          {{manoc_db_dsn}}
 	user         {{manoc_db_user}}
-	password     {{manoc_db_pass}}
+	password     {{manoc_db_password}}
 	AutoCommit   1
  </connect_info>
 </Model::ManocDB>
