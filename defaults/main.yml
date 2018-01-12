@@ -13,7 +13,7 @@ manoc_local_lib: "{{manoc_install_dir}}/perl5"
 
 manoc_db_name: ""
 manoc_db_user: ""
-manoc_db_pass: ""
+manoc_db_password: ""
 manoc_db_backend: sqlite
 
 
