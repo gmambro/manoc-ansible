@@ -1,7 +1,10 @@
-Role Name
+Ansible Manoc Role
 =========
 
-A brief description of the role goes here.
+A role to install [Manoc](https:/github.com/ManocLabs/manoc).
+
+[![Build Status](https://travis-ci.org/ManocLabs/ansible-role-manoc.svg?branch=master)](https://travis-ci.org/ManocLabs/ansible-role-manoc) 
+
 
 Role Variables
 --------------
