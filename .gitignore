@@ -3,3 +3,4 @@
 *.old
 *.retry
 .vagrant
+playbooks/roles
