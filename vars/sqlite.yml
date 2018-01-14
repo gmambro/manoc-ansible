@@ -1,7 +1,8 @@
 ---
+manoc_db_name: "{{ manoc_app_dir}}/manoc.sqlite"
 manoc_db_dsn: "dbi:SQLite:dbname={{ manoc_db_name }}"
 
 manoc_pkg_db_deps: []
- 
-manoc_cpan_db_deps: 
+
+manoc_cpan_db_deps:
  - DBD::SQLite
