@@ -77,7 +77,7 @@
       name: "{{item}}"
       notest: True
       locallib: "{{manoc_local_lib}}"
-  with_items: "{{ manoc_cpan_db_deps }}" 
+  with_items: "{{ manoc_cpan_db_deps }}"
 
 - name: Manoc | Create manoc config file
   template:
@@ -115,9 +115,10 @@
   notify:
     - reload systemctl
 
-- name: Manoc | Enable and start services
-  service: name=manoc-{{item}}.service state=started enabled=yes
+- name: Manoc | Enable services
+  service: name=manoc-{{item}}.service enabled=yes
   with_items:
       - arpsniffer
       - fcgi
       - netwalker
+  when: manoc_enable_services

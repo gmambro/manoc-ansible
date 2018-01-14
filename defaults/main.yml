@@ -16,6 +16,7 @@ manoc_db_user: ""
 manoc_db_password: ""
 manoc_db_backend: sqlite
 
+manoc_enable_services: true
 
 manoc_conf_file: /etc/manoc.conf
 manoc_log_conf_file: /etc/manoc_log.conf
