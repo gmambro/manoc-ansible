@@ -9,6 +9,9 @@ manoc_download_from_git: true
 manoc_git_url: https://github.com/ManocLabs/manoc.git
 manoc_git_version: HEAD
 
+manoc_group: manoc
+manoc_user: manoc 
+
 manoc_local_lib: "{{manoc_install_dir}}/perl5"
 
 manoc_db_name: ""
@@ -32,7 +35,7 @@ manoc_snmp_conf_file: "{{manoc_snmp_conf_dir}}/snmp.conf"
 manoc_run_dir: /var/run/manoc
 
 manoc_netdisco_mibs_url: "http://downloads.sourceforge.net/project/netdisco/netdisco-mibs/latest-snapshot/netdisco-mibs-snapshot.tar.gz"
-manoc_netdisco_mibs_checksum: sha1:c9f65eb9a0600033e8fe958ac8fd49e47f7035dd
-manoc_netdisco_conf_sample: netdisco-mibs-3.1/EXTRAS/contrib/snmp.conf
+manoc_netdisco_mibs_checksum: sha1:842753c18285feb796ac525a2bdd2a8c49463e0b
+manoc_netdisco_conf_sample: netdisco-mibs-4.003/EXTRAS/contrib/snmp.conf
 # TODO
 # manoc_snmp_vendors:
