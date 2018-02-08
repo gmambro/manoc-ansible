@@ -3,3 +3,23 @@
   remote_user: root
   roles:
     - manoc
+  post_tasks:
+    - name: Start Manoc services
+      service: name=manoc-{{item}}.service status=started
+      with_items:
+        - arpsniffer
+        - fcgi
+        - netwalker
+    - name: Check if Manoc FCGI is running
+      command: systemctl status manoc-fcgi
+      ignore_errors: yes
+      changed_when: false
+      register: service_fcgi_status
+    - name: Report status of Apache
+      fail:
+        msg: |
+          Service Manoc FCGI is not running.
+          Output of `systemctl status manoc fcgi`:
+          {{ service_fcgi_status.stdout }}
+          {{ service_fcgi_status.stderr }}
+      when: service_fcgi_status | failed
