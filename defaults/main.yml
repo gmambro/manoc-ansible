@@ -34,7 +34,7 @@ manoc_snmp_conf_file: "{{manoc_snmp_conf_dir}}/snmp.conf"
 
 manoc_run_dir: /var/run/manoc
 
-manoc_netdisco_mibs_url: "http://downloads.sourceforge.net/project/netdisco/netdisco-mibs/4.005/netdisco-mibs-4.005.tar.gz"
+manoc_netdisco_mibs_url: "http://downloads.sourceforge.net/project/netdisco/4.005/netdisco-mibs-4.005.tar.gz"
 manoc_netdisco_mibs_checksum: sha1:9f939bb0d3a372d04486ea3475b22bd703c16694
 manoc_netdisco_conf_sample: netdisco-mibs-4.003/EXTRAS/contrib/snmp.conf
 # TODO
