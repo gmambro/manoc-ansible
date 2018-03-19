@@ -1,9 +1,10 @@
 ---
-- hosts: all
+- hosts: localhost
   become: true
   become_user: root
   vars:
     manoc_install_dir: /opt/manoc
+    manoc_db_backend: mysql
     manoc_db_name: manoc
     manoc_db_user: manoc_rw
     manoc_db_password: manoc123

@@ -3,3 +3,58 @@
   remote_user: root
   roles:
     - tested_role
+  post_tasks:
+    - name: Init Manoc DB schema
+      shell: "{{manoc_app_dir}}/script/manoc_create_ddl.pl | sqlite3 {{manoc_db_name}}"
+
+    - name: Init Manoc DB
+      command: "{{manoc_app_dir}}/script/manoc_initdb.pl"
+
+    - name: Start Manoc services
+      service: name=manoc-{{item}}.service state=started
+      with_items:
+        - arpsniffer
+        - fcgi
+        - netwalker
+
+    - name: Check if Manoc fcgi is running
+      command: systemctl status manoc-fcgi
+      ignore_errors: yes
+      changed_when: false
+      register: service_status
+
+    - fail:
+      msg: |
+        Service Manoc fcgi is not running.
+        Output of `systemctl status manoc fcgi`:
+        {{ service_status.stdout }}
+        {{ service_status.stderr }}
+      when: service_status | failed
+
+    - name: Check if Manoc netwalker is running
+      command: systemctl status manoc-netwalker
+      ignore_errors: yes
+      changed_when: false
+      register: service_status
+
+    - fail:
+      msg: |
+        Service Manoc netwalker is not running.
+        Output of `systemctl status manoc netwalker`:
+        {{ service_status.stdout }}
+        {{ service_status.stderr }}
+      when: service_status | failed
+
+    - name: Check if Manoc arpsniffer is running
+      command: systemctl status manoc-arpsniffer
+      ignore_errors: yes
+      changed_when: false
+      register: service_status
+
+    - fail:
+      msg: |
+        Service Manoc arpsniffer is not running.
+        Output of `systemctl status manoc arpsniffer`:
+        {{ service_status.stdout }}
+        {{ service_status.stderr }}
+      when: service_status | failed

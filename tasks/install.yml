@@ -26,6 +26,11 @@
     - net-snmp-perl
     - libpcap-devel
 
+- name: Manoc | Install perl vendor packages for DB suppor
+  package: name={{item}} state=present
+  with_items: "{{ manoc_pkg_db_deps }}"
+
+
 - name: Manoc | Test for cpanm
   shell: perl -MApp::cpanminus -e1
   register: cpanm_result
@@ -52,7 +57,7 @@
       notest: True
       locallib: "{{manoc_local_lib}}"
 
-- name:  Manoc | Install additional deps
+- name:  Manoc | Install additional deps into locallib
   environment:
       PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
   cpanm:
@@ -64,6 +69,15 @@
       - Net::Pcap
       - NetPacket::Ethernet
       - DBD::mysql
+
+- name:  Manoc | Install DB additional deps into locallib
+  environment:
+      PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
+  cpanm:
+      name: "{{item}}"
+      notest: True
+      locallib: "{{manoc_local_lib}}"
+  with_items: "{{ manoc_cpan_db_deps }}"
 
 - name: Manoc | Create manoc config file
   template:
@@ -101,9 +115,10 @@
   notify:
     - reload systemctl
 
-- name: Manoc | Enable and start services
-  service: name=manoc-{{item}}.service state=started enabled=yes
+- name: Manoc | Enable services
+  service: name=manoc-{{item}}.service enabled=yes
   with_items:
       - arpsniffer
       - fcgi
       - netwalker
+  when: manoc_enable_services
