@@ -35,6 +35,7 @@
   shell: perl -MApp::cpanminus -e1
   register: cpanm_result
   ignore_errors: true
+  changed_when: false
 
 - name: Manoc | download CPANm installer
   get_url:
@@ -68,7 +69,6 @@
       - FCGI::ProcManager
       - Net::Pcap
       - NetPacket::Ethernet
-      - DBD::mysql
 
 - name:  Manoc | Install DB additional deps into locallib
   environment:

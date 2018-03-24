@@ -1,0 +1,31 @@
+###########################################################################
+# snmp.conf for file using netdisco-mibs in Manoc
+#
+#   The output of this file was based on manoc_snmp_vendors in ansible
+#
+#   Run the command 'snmpconf' for help generating a harder file
+#   or 'man snmp.conf'
+#
+###########################################################################
+
+
+# Change /usr/local/netdisco to the directory you installed netdisco-mibs into
+#        if using outside of netdisco.
+
+mibdirs {{ manoc_snmp_mibs_dir }}/rfc
+mibdirs +{{ manoc_snmp_mibs_dir }}/net-snmp
+
+{% for dir in netdisco_dirs  %}
+{% if dir not in manoc_snmp_vendors %}# {% endif %}
+mibdirs +{{ manoc_snmp_mibs_dir }}/{{ dir }}
+{% endfor %}
+
+# Versions 5.5+ no longer generate .index files in the mib directory
+# instead it stores mib indexes in the /var/net-snmp/mib_indexes which
+# may not be writable by non-root users.  Uncomment persistentDir to
+# change the base where the mib_indexes directory will be created.
+# This should only be needed by package maintainers.
+#persistentDir mibdirs {{ manoc_snmp_mibs_dir }}
+
+mibreplacewithlatest  yes
+mibs ALL
