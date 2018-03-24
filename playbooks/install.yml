@@ -35,5 +35,5 @@
               fastcgi_read_timeout 120;
             }
           - location /static {
-              root {{ manoc_app_dir }}/root;
+              root {{ manoc_app_dir }}/root;
             }

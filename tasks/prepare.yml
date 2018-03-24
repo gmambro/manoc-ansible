@@ -6,7 +6,8 @@
 - name: Get version of Perl interpreter
   command: 'perl -e "print $^V"'
   register: perl_version_output
+  changed_when: false
 
 - name: Check Perl version
   assert:
-    that: "{{ perl_version_output.stdout | version_compare('5.16', '>=') }}"
+    that: "{{ perl_version_output.stdout | version_compare('5.16', '>=') }}"
