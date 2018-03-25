@@ -4,15 +4,15 @@
   roles:
     - tested_role
   post_tasks:
-    - name: Check {{manoc_db_name}} 
+    - name: Check {{manoc_db_name}}
       stat:
         path: "{{manoc_db_name}}"
       register:
         db_stat
-        
+
     - name: Init Manoc DB schema
       shell: "{{manoc_app_dir}}/script/manoc_create_ddl.pl | sqlite3 {{manoc_db_name}}"
-      when: db_stat.stat.exists
+      when: db_stat.stat.exists == False
 
     - name: Init Manoc DB
       command: "{{manoc_app_dir}}/script/manoc_initdb.pl"
