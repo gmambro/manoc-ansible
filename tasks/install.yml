@@ -81,13 +81,13 @@
 
 - name: Manoc | Create manoc config file
   template:
-    src: manoc.conf.jj2
+    src: manoc.conf.j2
     dest: "{{ manoc_conf_file }}"
     mode: 644
 
 - name: Manoc | Create manoc log config file
   template:
-    src: manoc_log.conf.jj2
+    src: manoc_log.conf.j2
     dest: "{{ manoc_log_conf_file }}"
     mode: 644
 
@@ -105,7 +105,7 @@
 
 - name: Manoc | Create Systemd Unit files
   template:
-    src: manoc-{{item}}.service.jj2
+    src: manoc-{{item}}.service.j2
     dest: /etc/systemd/system/manoc-{{item}}.service
     mode: 644
   with_items:
